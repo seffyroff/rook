@@ -311,12 +311,24 @@ func (r *ReconcileObjectStoreUser) initializeObjectStoreContext(u *cephv1.CephOb
 	}
 
 	r.objContext = objContext
+<<<<<<< HEAD
 	r.objContext.Endpoint = store.Status.Info["endpoint"]
 	if store.Status.Info["secureEndpoint"] != "" {
 		r.objContext.Endpoint = store.Status.Info["secureEndpoint"]
+=======
+	if store.Status == nil {
+		return errors.New("failed to initialize ceph object user because unknown object store status")
+>>>>>>> c9fee1f88... ceph: ensure object store endpoint is initialized for user
 	}
-	if r.objContext.Endpoint == "" {
+
+	if _, ok := store.Status.Info["endpoint"]; ok {
+		r.objContext.Endpoint = store.Status.Info["endpoint"]
+	} else {
 		return errors.Errorf("endpoint is missing in the status Info")
+	}
+
+	if _, ok := store.Status.Info["secureEndpoint"]; ok {
+		r.objContext.Endpoint = store.Status.Info["secureEndpoint"]
 	}
 
 	return nil
