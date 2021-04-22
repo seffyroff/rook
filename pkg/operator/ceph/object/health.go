@@ -17,7 +17,6 @@ limitations under the License.
 package object
 
 import (
-	"context"
 	"fmt"
 	"time"
 
@@ -25,7 +24,10 @@ import (
 	cephv1 "github.com/rook/rook/pkg/apis/ceph.rook.io/v1"
 	"github.com/rook/rook/pkg/clusterd"
 	"github.com/rook/rook/pkg/operator/k8sutil"
+<<<<<<< HEAD
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+=======
+>>>>>>> 7a5928d2c... ceph: add api to fetch cacert for RGW server
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -122,10 +124,13 @@ func (c *bucketChecker) checkObjectStoreHealth() error {
 
 		Always keep the bucket and the user for the health check, just do PUT and GET because bucket creation is expensive
 	*/
-	ctx := context.TODO()
 	var s3AccessKey string
 	var s3SecretKey string
+<<<<<<< HEAD
 	var sslCert []byte
+=======
+	var tlsCert []byte
+>>>>>>> 7a5928d2c... ceph: add api to fetch cacert for RGW server
 	s3endpoint := buildDNSEndpoint(BuildDomainName(c.objContext.Name, c.namespacedName.Namespace), c.port, c.objectStoreSpec.IsTLSEnabled())
 
 	// Generate unique user and bucket name
@@ -150,8 +155,15 @@ func (c *bucketChecker) checkObjectStoreHealth() error {
 	s3SecretKey = *user.SecretKey
 
 	if c.objectStoreSpec.IsTLSEnabled() {
+<<<<<<< HEAD
 		sslSecretCert, _ := c.context.Clientset.CoreV1().Secrets(c.namespacedName.Namespace).Get(ctx, c.objectStoreSpec.Gateway.SSLCertificateRef, metav1.GetOptions{})
 		sslCert = sslSecretCert.Data[certKeyName]
+=======
+		tlsCert, err = GetTlsCaCert(c.objContext, c.objectStoreSpec)
+		if err != nil {
+			return errors.Wrapf(err, "failed to fetch CA cert for the user %q to establish TLS connection with the object store %q", userConfig.UserID, c.namespacedName.Name)
+		}
+>>>>>>> 7a5928d2c... ceph: add api to fetch cacert for RGW server
 	}
 	// Initiate s3 agent
 	logger.Debugf("initializing s3 connection for object store %q", c.namespacedName.Name)
