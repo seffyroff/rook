@@ -7,6 +7,7 @@ metadata:
     app: rook-ceph-mgr
     rook_cluster: rook-ceph # namespace:cluster
 spec:
+  loadBalancerIP: 10.0.11.232
   ports:
     - name: dashboard
       port: 8443

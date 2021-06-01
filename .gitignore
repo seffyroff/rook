@@ -10,3 +10,6 @@
 # OLM related stuff
 cluster/olm/ceph/deploy/*
 cluster/olm/ceph/templates/*
+cluster/examples/kubernetes/ceph/kubeconfig
+.gitignore
+kubeconfig
