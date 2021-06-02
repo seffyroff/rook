@@ -4,13 +4,15 @@ metadata:
   name: myfs-ec
   namespace: rook-ceph
 spec:
-  failureDomain: osd
-  deviceClass: hdd
   metadataPool:
+    failureDomain: osd
     replicated:
       size: 2
+    # deviceClass: ssd
   dataPools:
-    - erasureCoded:
+    - failureDomain: osd
+      deviceClass: hdd
+      erasureCoded:
         dataChunks: 2
         codingChunks: 1
   metadataServer:
